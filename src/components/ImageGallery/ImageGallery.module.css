@@ -18,4 +18,9 @@
     object-fit: cover;
     display: block;
     border-radius: 8px;
+    transition: transform 0.3s ease-in-out;
+}
+.wrapper img:hover {
+    transform: scale(1.05);
+    cursor: pointer;
 }
