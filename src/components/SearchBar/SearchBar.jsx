@@ -1,25 +1,30 @@
-import { Field, Form, Formik, ErrorMessage } from 'formik'
+import { Field, Form, Formik } from 'formik'
 import React from 'react'
 import s from './SearchBar.module.css'
-import * as Yup from "yup";
 
-const SearchBar = ({handleChangeQuery}) => {
-  const feedbackSchema = Yup.object().shape({
-    query: Yup.string()
-      .min(3, "Too short!")
-      .max(20, "Too long!")
-      .required("This field is required!"),
-  });
+const SearchBar = ({handleChangeQuery, toast}) => {
   const handleSubmit = (values, action) => {
-    console.log(values);
-    handleChangeQuery(values.query);
+    const {query} = values;
+    if(!query.trim()){
+      toast.error("Please enter a search query!");
+      return;
+    }
+    if (query.trim().length < 3) {
+      toast.error("Search term is too short!");
+      return;
+    }
+  
+    if (query.trim().length > 20) {
+      toast.error("Search term is too long!");
+      return;
+    }
+    handleChangeQuery(query.trim());
     action.resetForm();
   }
   return (
     <header className={s.headerStyle}>
       <Formik initialValues={{ query: '' }} 
               onSubmit={handleSubmit} 
-              validationSchema={feedbackSchema}
       >
         <Form className={s.fomikInput}>
          <div className={s.formikInput}>
@@ -28,7 +33,6 @@ const SearchBar = ({handleChangeQuery}) => {
               name = "query"
               placeholder="Search images and photos"
             />
-            <ErrorMessage name="query" component="span" />
          </div>
           <button type="submit">Search</button>
           

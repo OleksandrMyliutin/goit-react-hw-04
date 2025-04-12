@@ -9,7 +9,7 @@ export const fetchResults = async (query, page, signal) => {
         params:{
         query: query,
         page: page,
-        per_page: 10,
+        per_page: 12,
         },
         signal: signal,
     })

@@ -7,19 +7,29 @@ import ImageGallery from "./components/ImageGallery/ImageGallery";
 import { fetchResults } from "./services/api";
 import Loader from './components/Loader/Loader';
 import ClipLoader from "react-spinners/ClipLoader";
-
+import toast, { Toaster } from 'react-hot-toast';
+import  ErrorMessage  from "./components/ErrorMessage/ErrorMessage";
+import { useRef } from 'react';
 
 
 const App = () => {
   const [results, setResults] = useState([]);
-  const [query, setQuery] = useState('cats');
+  const [query, setQuery] = useState('random');
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const galleryRef = useRef(null);
   const handleLoadMore = () =>{
     setPage(prev => prev + 1);
+    setQuery(prev => prev);
+    setTimeout(() => {
+    galleryRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }, 300);
   };
   const [loading, setLoading] = useState(false);
   const handleChangeQuery = newQuery => {
     setQuery(newQuery);
+    setResults([]);
+    setPage(1);
   }
   useEffect(() =>{
     const abortController = new AbortController();
@@ -29,6 +39,7 @@ const App = () => {
         setLoading(true);
         const data = await fetchResults(query, page, signal);
         setResults(prev => [...prev, ...data.results]);
+        setTotalPages(data.total_pages)
       } catch (error) {
         if (error.name !== 'CanceledError') {
           console.error(error);
@@ -57,12 +68,14 @@ const App = () => {
 
   return (
     <>
+      <Toaster position="top-center" reverseOrder={false}/>
       <div className={h.wrapper}>
-        <SearchBar handleChangeQuery={handleChangeQuery}/>
+        <SearchBar handleChangeQuery={handleChangeQuery} toast={toast}/>
       </div>
+      {results.length == 0 && <ErrorMessage query={query}/>}
+      <div ref={galleryRef}><ImageGallery  results={filteredResults}/></div>
       {loading && <div className={c.wrapper}><ClipLoader color={"#00ffff"} loading={loading} size={60} aria-label="SyncLoader" data-testid="loader"/></div>}
-      <ImageGallery  results={filteredResults}/>
-      {results.length > 0 && <div className={l.wrapper}><Loader onClick={handleLoadMore}/></div>}
+      {results.length > 0 && page < totalPages &&  <div className={l.wrapper}><Loader onClick={handleLoadMore}/></div>}
     </>
   )
 }
