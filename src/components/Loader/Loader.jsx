@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Loader = () => {
+const Loader = ({onClick}) => {
   return (
     <div>
-      
+      <button onClick={onClick}>Load more</button>
     </div>
   )
 }

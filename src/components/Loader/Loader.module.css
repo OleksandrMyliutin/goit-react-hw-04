@@ -1,0 +1,44 @@
+.wrapper{
+    display: flex;
+    justify-content: end;
+    align-items: end;
+}
+.wrapper button{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #ff00b7;
+    font-weight: 700;
+    padding: 0px 10px;
+    border-radius: 8px;
+    box-shadow:
+        0 0 10px #ff00b7,
+        0 0 20px #ff00b7,
+        0 0 30px #ff00b7,
+        0 0 40px #ff00b7;
+}
+.wrapper button:hover{
+    background-color: #ff00b7;
+    color: #000000;
+    transition: all 0.3s ease-in-out;
+}
+.wrapper button:active{
+    transform: scale(0.95);
+    transition: all 0.3s ease-in-out;
+}
+.wrapper button:focus{
+    outline: none;
+    box-shadow:
+        0 0 10px #ff00b7,
+        0 0 20px #ff00b7,
+        0 0 30px #ff00b7,
+        0 0 40px #ff00b7;
+}
+.wrapper button:focus-visible{
+    outline: none;
+    box-shadow:
+        0 0 10px #ff00b7,
+        0 0 20px #ff00b7,
+        0 0 30px #ff00b7,
+        0 0 40px #ff00b7;
+}
