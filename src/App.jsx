@@ -10,9 +10,23 @@ import ClipLoader from "react-spinners/ClipLoader";
 import toast, { Toaster } from 'react-hot-toast';
 import  ErrorMessage  from "./components/ErrorMessage/ErrorMessage";
 import { useRef } from 'react';
-
+import Modal from 'react-modal';
+import ImageModal from './components/ImageModal/ImageModal';
 
 const App = () => {
+  Modal.setAppElement('#root');
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const openModal = (imageUrl) => {
+    console.log(imageUrl)
+    setSelectedImage(imageUrl);
+    setModalIsOpen(true);
+  };
+  
+  const closeModal = () => {
+    setModalIsOpen(false);
+    setSelectedImage(null);
+  };
   const [results, setResults] = useState([]);
   const [query, setQuery] = useState('random');
   const [page, setPage] = useState(1);
@@ -68,12 +82,13 @@ const App = () => {
 
   return (
     <>
-      <Toaster position="top-center" reverseOrder={false}/>
+      <Toaster position="top-right" reverseOrder={false}/>
       <div className={h.wrapper}>
         <SearchBar handleChangeQuery={handleChangeQuery} toast={toast}/>
       </div>
       {!loading && results.length === 0 && <ErrorMessage query={query}/>}
-      <div ref={galleryRef}><ImageGallery  results={filteredResults}/></div>
+      <div ref={galleryRef}><ImageGallery  results={filteredResults} onImageClick={openModal}/></div>
+      <ImageModal isOpen={modalIsOpen} imageUrl={selectedImage} onClose={closeModal}/>
       {loading && <div className={c.wrapper}><ClipLoader color={"#00ffff"} loading={loading} size={60} aria-label="SyncLoader" data-testid="loader"/></div>}
       {results.length > 0 && page < totalPages &&  <div className={l.wrapper}><Loader onClick={handleLoadMore}/></div>}
     </>
