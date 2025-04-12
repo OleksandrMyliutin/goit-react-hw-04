@@ -72,7 +72,7 @@ const App = () => {
       <div className={h.wrapper}>
         <SearchBar handleChangeQuery={handleChangeQuery} toast={toast}/>
       </div>
-      {results.length == 0 && <ErrorMessage query={query}/>}
+      {!loading && results.length === 0 && <ErrorMessage query={query}/>}
       <div ref={galleryRef}><ImageGallery  results={filteredResults}/></div>
       {loading && <div className={c.wrapper}><ClipLoader color={"#00ffff"} loading={loading} size={60} aria-label="SyncLoader" data-testid="loader"/></div>}
       {results.length > 0 && page < totalPages &&  <div className={l.wrapper}><Loader onClick={handleLoadMore}/></div>}
