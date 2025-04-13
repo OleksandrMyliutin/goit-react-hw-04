@@ -1,17 +1,17 @@
 import h from './components/SearchBar/SearchBar.module.css'
-import l from './components/Loader/Loader.module.css'
-import c from './components/ClipLoader/ClipLoader.module.css'
+import l from './components/LoadMoreBtn/LoadMoreBtn.module.css'
+import c from './components/Loader/Loader.module.css'
 import { useEffect, useState } from "react"
 import SearchBar from "./components/SearchBar/SearchBar"
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import { fetchResults } from "./services/api";
 import Loader from './components/Loader/Loader';
-import ClipLoader from "react-spinners/ClipLoader";
 import toast, { Toaster } from 'react-hot-toast';
 import  ErrorMessage  from "./components/ErrorMessage/ErrorMessage";
 import { useRef } from 'react';
 import Modal from 'react-modal';
 import ImageModal from './components/ImageModal/ImageModal';
+import LoadMoreBtn from './components/LoadMoreBtn/LoadMoreBtn'
 
 const App = () => {
   Modal.setAppElement('#root');
@@ -89,8 +89,8 @@ const App = () => {
       {!loading && results.length === 0 && <ErrorMessage query={query}/>}
       <div ref={galleryRef}><ImageGallery  results={filteredResults} onImageClick={openModal}/></div>
       <ImageModal isOpen={modalIsOpen} imageUrl={selectedImage} onClose={closeModal}/>
-      {loading && <div className={c.wrapper}><ClipLoader color={"#00ffff"} loading={loading} size={60} aria-label="SyncLoader" data-testid="loader"/></div>}
-      {results.length > 0 && page < totalPages &&  <div className={l.wrapper}><Loader onClick={handleLoadMore}/></div>}
+      {loading && <div className={c.wrapper}><Loader/></div>}
+      {results.length > 0 && page < totalPages &&  <div className={l.wrapper}><LoadMoreBtn onClick={handleLoadMore}/></div>}
     </>
   )
 }

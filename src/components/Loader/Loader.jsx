@@ -1,9 +1,9 @@
 import React from 'react'
-
-const Loader = ({onClick}) => {
+import ClipLoader from "react-spinners/ClipLoader";
+const Loader = ({loading}) => {
   return (
     <div>
-      <button onClick={onClick}>Load more</button>
+      <ClipLoader color={"#00ffff"} loading={loading} size={60} aria-label="SyncLoader" data-testid="loader"/>
     </div>
   )
 }
